@@ -20,31 +20,22 @@ namespace BankingApp
             allTime.AddYear(y2021);
             allTime.PrintTransactions();
 
-
-            var options = new JsonSerializerOptions{IncludeFields = true};
-            string jsonString = JsonSerializer.Serialize(allTime, options);
-            Console.WriteLine(jsonString);
-
-            // Program myProgram = new Program();
-
-            // AllTime allTime = myProgram.loadRecords();
-
-
-            // System.Console.WriteLine(allTime.Years.Count);
-
-            // allTime.PrintTransactions();
-
-            // Console.WriteLine("GOT TO THE END?????");
+            Program.saveRecords(allTime);
 
         }
 
-        AllTime loadRecords()
+        static void saveRecords(AllTime allTime)
+        {
+            string fileName = "savingsRecords.json"; 
+            string jsonString = JsonSerializer.Serialize(allTime);
+            File.WriteAllText(fileName, jsonString);
+        }
+
+        static AllTime loadRecords()
         { 
             string fileName = "savingsRecords.json";
             string jsonString = File.ReadAllText(fileName);
-            AllTime allTime = JsonSerializer.Deserialize<AllTime>(jsonString);
-
-            return allTime;
+            return JsonSerializer.Deserialize<AllTime>(jsonString);
         }
     }
 
@@ -75,7 +66,7 @@ namespace BankingApp
         {
             foreach (Year year in Years)
             {
-                Console.WriteLine($"YEAR: {year.ThisYear}\n");
+                Console.WriteLine($"YEAR: {year.ThisYear} (TOTAL: {year.TotalAmount})");
                 year.PrintTransactions();
             }
         }
@@ -85,6 +76,16 @@ namespace BankingApp
     public class Year
     {
         public int ThisYear { get; }
+
+        private decimal _totalAmount = 0.0M;
+        public decimal TotalAmount
+        {
+            get
+            {
+                return _totalAmount;
+            }
+        }
+        
         
         private Month[] _months = new Month[12];
         public Month[] Months
@@ -114,7 +115,17 @@ namespace BankingApp
             for (int i = 0; i < 12; i++)
             {
                 _months[i] = new Month(i+1, thisYear);
+
+                // subscribing the year to the events that month publishes
+                // each time the total is updated.
+                _months[i].TotalUpdated += OnTotalUpdated; 
             }
+        }
+
+        public void OnTotalUpdated(Object source, TotalEventArgs e)
+        {
+            Console.WriteLine($"UPDATING YEAR TOTAL: {e.Change}");
+            _totalAmount += e.Change;
         }
 
         public void PrintTransactions()
@@ -163,13 +174,28 @@ namespace BankingApp
         {
             _totalAmount += change;
             _transactions.Add(new Transaction(change));
+            OnTotalUpdated(change); // trigger event to update year total.
         }
 
         public void RecordTransaction(decimal change, TransactionCategory category)
         {
             _totalAmount += change;
             _transactions.Add(new Transaction(change, category));
+            OnTotalUpdated(change);
         }
+
+        // Event - updating the total of a month updates the total of the year by
+        // the same amount.
+        public event EventHandler<TotalEventArgs> TotalUpdated;
+        protected virtual void OnTotalUpdated(decimal change)
+        {
+            if (TotalUpdated != null)
+            {
+                TotalUpdated(this, new TotalEventArgs(){ Change = change });
+            }
+        }
+
+      
 
         public void PrintTransactions()
         {
@@ -181,6 +207,11 @@ namespace BankingApp
             Console.WriteLine($"TOTAL: {TotalAmount}\n");
         }        
     }
+
+    public class TotalEventArgs : EventArgs
+    {
+        public decimal Change { get; set; }
+    }      
 
     public enum TransactionCategory
     {
