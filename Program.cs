@@ -18,6 +18,8 @@ namespace BankingApp
 
             AllTime allTime = new AllTime();
             allTime.AddYear(y2021);
+
+            System.Console.WriteLine("All Time Total: " + allTime.TotalAmount + '\n');
             allTime.PrintTransactions();
 
             Program.saveRecords(allTime);
@@ -50,6 +52,19 @@ namespace BankingApp
             }
         }
 
+        private decimal _totalAmount;
+        public decimal TotalAmount
+        {
+            get
+            {
+                foreach (Year year in Years)
+                {
+                    _totalAmount += year.TotalAmount;
+                }
+                return _totalAmount;
+            }
+        }
+
         public AllTime(){}
 
         public AllTime(Year year)
@@ -66,7 +81,7 @@ namespace BankingApp
         {
             foreach (Year year in Years)
             {
-                Console.WriteLine($"YEAR: {year.ThisYear} (TOTAL: {year.TotalAmount})");
+                Console.WriteLine($"YEAR: {year.ThisYear} (TOTAL: {year.TotalAmount})\n");
                 year.PrintTransactions();
             }
         }
@@ -95,16 +110,16 @@ namespace BankingApp
                 return _months;
             }
         }
-        public Month January   { get { return Months[0]; } }
-        public Month February  { get { return Months[1]; } }
-        public Month March     { get { return Months[2]; } }
-        public Month April     { get { return Months[3]; } }
-        public Month May       { get { return Months[4]; } }
-        public Month June      { get { return Months[5]; } }
-        public Month July      { get { return Months[6]; } }
-        public Month August    { get { return Months[7]; } }
-        public Month September { get { return Months[8]; } }
-        public Month October   { get { return Months[9]; } }
+        public Month January   { get { return Months[0];  } }
+        public Month February  { get { return Months[1];  } }
+        public Month March     { get { return Months[2];  } }
+        public Month April     { get { return Months[3];  } }
+        public Month May       { get { return Months[4];  } }
+        public Month June      { get { return Months[5];  } }
+        public Month July      { get { return Months[6];  } }
+        public Month August    { get { return Months[7];  } }
+        public Month September { get { return Months[8];  } }
+        public Month October   { get { return Months[9];  } }
         public Month November  { get { return Months[10]; } }
         public Month December  { get { return Months[11]; } }
 
@@ -124,7 +139,7 @@ namespace BankingApp
 
         public void OnTotalUpdated(Object source, TotalEventArgs e)
         {
-            Console.WriteLine($"UPDATING YEAR TOTAL: {e.Change}");
+            // Console.WriteLine($"UPDATING YEAR TOTAL: {e.Change}");
             _totalAmount += e.Change;
         }
 
@@ -202,7 +217,14 @@ namespace BankingApp
             Console.WriteLine($"Date: {CalendarMonth}/{Year}");
             foreach (Transaction transaction in Transactions)
             {
-                Console.WriteLine(transaction.Amount);
+                if(transaction.Amount > 0)
+                {
+                    Console.WriteLine($"IN:  {transaction.Amount}");    
+                }
+                else if (transaction.Amount < 0)
+                {
+                    Console.WriteLine($"OUT: {transaction.Amount*-1}");
+                }
             }
             Console.WriteLine($"TOTAL: {TotalAmount}\n");
         }        
