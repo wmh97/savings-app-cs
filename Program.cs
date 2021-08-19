@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json;
+using System.IO;
 
 namespace BankingApp
 {
@@ -7,7 +9,7 @@ namespace BankingApp
     {
         static void Main(string[] args)
         {
-
+            
             Year y2021 = new Year(2021);
             y2021.January.RecordTransaction(5.00M);
             y2021.January.RecordTransaction(6.00M);
@@ -17,6 +19,32 @@ namespace BankingApp
             AllTime allTime = new AllTime();
             allTime.AddYear(y2021);
             allTime.PrintTransactions();
+
+
+            var options = new JsonSerializerOptions{IncludeFields = true};
+            string jsonString = JsonSerializer.Serialize(allTime, options);
+            Console.WriteLine(jsonString);
+
+            // Program myProgram = new Program();
+
+            // AllTime allTime = myProgram.loadRecords();
+
+
+            // System.Console.WriteLine(allTime.Years.Count);
+
+            // allTime.PrintTransactions();
+
+            // Console.WriteLine("GOT TO THE END?????");
+
+        }
+
+        AllTime loadRecords()
+        { 
+            string fileName = "savingsRecords.json";
+            string jsonString = File.ReadAllText(fileName);
+            AllTime allTime = JsonSerializer.Deserialize<AllTime>(jsonString);
+
+            return allTime;
         }
     }
 
@@ -66,18 +94,18 @@ namespace BankingApp
                 return _months;
             }
         }
-        public Month January { get { return Months[0]; } }
-        public Month February { get { return Months[1]; } }
-        public Month March { get { return Months[2]; } }
-        public Month April { get { return Months[3]; } }
-        public Month May { get { return Months[4]; } }
-        public Month June { get { return Months[5]; } }
-        public Month July { get { return Months[6]; } }
-        public Month August { get { return Months[7]; } }
+        public Month January   { get { return Months[0]; } }
+        public Month February  { get { return Months[1]; } }
+        public Month March     { get { return Months[2]; } }
+        public Month April     { get { return Months[3]; } }
+        public Month May       { get { return Months[4]; } }
+        public Month June      { get { return Months[5]; } }
+        public Month July      { get { return Months[6]; } }
+        public Month August    { get { return Months[7]; } }
         public Month September { get { return Months[8]; } }
-        public Month October { get { return Months[9]; } }
-        public Month November { get { return Months[10]; } }
-        public Month December { get { return Months[11]; } }
+        public Month October   { get { return Months[9]; } }
+        public Month November  { get { return Months[10]; } }
+        public Month December  { get { return Months[11]; } }
 
         public Year(int thisYear)
         {
@@ -137,6 +165,12 @@ namespace BankingApp
             _transactions.Add(new Transaction(change));
         }
 
+        public void RecordTransaction(decimal change, TransactionCategory category)
+        {
+            _totalAmount += change;
+            _transactions.Add(new Transaction(change, category));
+        }
+
         public void PrintTransactions()
         {
             Console.WriteLine($"Date: {CalendarMonth}/{Year}");
@@ -148,15 +182,30 @@ namespace BankingApp
         }        
     }
 
+    public enum TransactionCategory
+    {
+        NECESSITIES,
+        LEISURE,
+        SALARY,
+        FINANCIAL
+    }
+
     public class Transaction
     {
         public decimal Amount { get; } = 0.00M;
-        public string Category { get; } = "";
+        public TransactionCategory Category { get; }
 
         public Transaction(decimal amount)
         {
             Amount = amount;
         }
+
+        public Transaction(decimal amount, TransactionCategory category)
+        {
+            Amount = amount;
+            Category = category;
+        }
+
     }
     
 }
