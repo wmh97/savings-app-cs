@@ -10,34 +10,78 @@ namespace BankingApp
         static void Main(string[] args)
         {
             
-            Year y2021 = new Year(2021);
-            y2021.January.RecordTransaction(5.00M);
-            y2021.January.RecordTransaction(6.00M);
-            y2021.January.RecordTransaction(3.00M);
-            y2021.January.RecordTransaction(-4.00M);
+            // Year y2021 = new Year(2021);
+            // y2021.January.RecordTransaction(5.00M);
+            // y2021.January.RecordTransaction(6.00M);
+            // y2021.January.RecordTransaction(3.00M);
+            // y2021.January.RecordTransaction(-4.00M);
+
+            // AllTime allTime = new AllTime();
+            // allTime.AddYear(y2021);
+
+            // System.Console.WriteLine("All Time Total: " + allTime.TotalAmount + '\n');
+            // allTime.PrintTransactions();
+
+            // Program.saveRecords(allTime);
 
             AllTime allTime = new AllTime();
-            allTime.AddYear(y2021);
-
-            System.Console.WriteLine("All Time Total: " + allTime.TotalAmount + '\n');
+            MockData.GenerateTransactions(allTime);
             allTime.PrintTransactions();
+            Console.WriteLine($"\nAvg Transaction Value: {Statistics.AverageTransactionValue}");
 
-            Program.saveRecords(allTime);
+
+            allTime.EmptyAll();
+            allTime.PrintTransactions();
 
         }
 
-        static void saveRecords(AllTime allTime)
+        static void SaveRecords(AllTime allTime)
         {
             string fileName = "savingsRecords.json"; 
             string jsonString = JsonSerializer.Serialize(allTime);
             File.WriteAllText(fileName, jsonString);
         }
 
-        static AllTime loadRecords()
+        static AllTime LoadRecords()
         { 
             string fileName = "savingsRecords.json";
             string jsonString = File.ReadAllText(fileName);
             return JsonSerializer.Deserialize<AllTime>(jsonString);
+        }
+    }
+
+    public class MockData
+    {
+        public static void GenerateTransactions(AllTime allTime)
+        {
+            Random rand = new Random();
+
+            // first generate a number of years (ie between 1 and 3)
+            int numberOfYears = rand.Next(1, 4);
+            int thisYear = 2015;
+            for (int i = 0; i < numberOfYears; i++)
+            {
+                Year newYear = new Year(thisYear);
+                allTime.AddYear(newYear);
+
+                // Then, for each month in each year generate a number of transactions (ie between 30 and 60)
+                foreach (Month month in newYear.Months)
+                {
+                    int numberOfTransactions = rand.Next(5, 61);
+
+                    // For each of those transactions generate a transaction amount (ie between 1 and 50)
+                    for (int j = 0; j < numberOfTransactions; j++)
+                    {
+                        decimal transactionAmount = (decimal)( rand.Next(1, 51) + rand.NextDouble() );
+                        Transaction newTransaction = new Transaction(transactionAmount);
+                        month.RecordTransaction(newTransaction.Amount);
+                    }
+
+                }
+
+                // increment the year to move onto the new year.
+                thisYear++;
+            }
         }
     }
 
@@ -60,11 +104,6 @@ namespace BankingApp
             _averageTransactionValue = ( (
                 _averageTransactionValue * (Transaction.TransactionNumber-1)) + transaction.Amount 
             ) / Transaction.TransactionNumber;            
-
-            System.Console.WriteLine(
-                $"AVG: at no. {Transaction.TransactionNumber}"
-            );
-            System.Console.WriteLine(AverageTransactionValue);
         }
 
         public static void OnTotalUpdated(Object source, TotalEventArgs e)
@@ -74,8 +113,10 @@ namespace BankingApp
 
         }
 
-
-
+        public static void EmptyAll()
+        {
+            _averageTransactionValue = 0.00M;
+        }
         
     }
 
@@ -122,6 +163,16 @@ namespace BankingApp
                 Console.WriteLine($"YEAR: {year.ThisYear} (TOTAL: {year.TotalAmount})\n");
                 year.PrintTransactions();
             }
+        }
+
+        public void EmptyAll()
+        {
+            foreach (Year year in Years)
+            {
+                year.EmptyAll();
+            }
+            _totalAmount = 0.00M;
+            Statistics.EmptyAll();
         }
 
     }
@@ -190,6 +241,16 @@ namespace BankingApp
             }
         }
 
+        public void EmptyAll()
+        {
+            foreach (Month month in Months)
+            {
+                month.Transactions.Clear();
+                month.EmptyAll();
+            }            
+            _totalAmount = 0.00M;
+        }
+
     }
 
     public class Month
@@ -252,8 +313,6 @@ namespace BankingApp
             }
         }
 
-      
-
         public void PrintTransactions()
         {
             Console.WriteLine($"Date: {CalendarMonth}/{Year}");
@@ -269,7 +328,12 @@ namespace BankingApp
                 }
             }
             Console.WriteLine($"TOTAL: {TotalAmount}\n");
-        }        
+        }      
+
+        public void EmptyAll()
+        {
+            _totalAmount = 0.00M;
+        }  
     }
 
     public class TotalEventArgs : EventArgs
