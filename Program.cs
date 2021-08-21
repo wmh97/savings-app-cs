@@ -41,6 +41,44 @@ namespace BankingApp
         }
     }
 
+    public class Statistics
+    {
+        private static decimal _averageTransactionValue = 0;
+        public static decimal AverageTransactionValue
+        {
+            get
+            {
+                return _averageTransactionValue;
+            }
+        }
+
+        // updates avg for both in and out - need to separate the
+        // two and maintain counters for in/out transactions.
+        public static void UpdateAverageTransactionValue(Transaction transaction)
+        {
+            // prev avg * n-1 to get previous total. Then add new transaction amount and div by n.
+            _averageTransactionValue = ( (
+                _averageTransactionValue * (Transaction.TransactionNumber-1)) + transaction.Amount 
+            ) / Transaction.TransactionNumber;            
+
+            System.Console.WriteLine(
+                $"AVG: at no. {Transaction.TransactionNumber}"
+            );
+            System.Console.WriteLine(AverageTransactionValue);
+        }
+
+        public static void OnTotalUpdated(Object source, TotalEventArgs e)
+        {
+            // update statistics.
+            UpdateAverageTransactionValue(e.Transaction);
+
+        }
+
+
+
+        
+    }
+
     public class AllTime
     {
         private List<Year> _years = new List<Year>();
@@ -134,13 +172,14 @@ namespace BankingApp
                 // subscribing the year to the events that month publishes
                 // each time the total is updated.
                 _months[i].TotalUpdated += OnTotalUpdated; 
+                _months[i].TotalUpdated += Statistics.OnTotalUpdated;
             }
         }
 
         public void OnTotalUpdated(Object source, TotalEventArgs e)
         {
             // Console.WriteLine($"UPDATING YEAR TOTAL: {e.Change}");
-            _totalAmount += e.Change;
+            _totalAmount += e.Transaction.Amount;
         }
 
         public void PrintTransactions()
@@ -188,25 +227,28 @@ namespace BankingApp
         public void RecordTransaction(decimal change)
         {
             _totalAmount += change;
-            _transactions.Add(new Transaction(change));
-            OnTotalUpdated(change); // trigger event to update year total.
+
+            Transaction newTransaction = new Transaction(change);
+            _transactions.Add(newTransaction);
+            OnTotalUpdated(newTransaction); // trigger event to update year total.
         }
 
         public void RecordTransaction(decimal change, TransactionCategory category)
         {
             _totalAmount += change;
-            _transactions.Add(new Transaction(change, category));
-            OnTotalUpdated(change);
+            Transaction newTransaction = new Transaction(change, category);
+            _transactions.Add(newTransaction);
+            OnTotalUpdated(newTransaction);
         }
 
         // Event - updating the total of a month updates the total of the year by
         // the same amount.
         public event EventHandler<TotalEventArgs> TotalUpdated;
-        protected virtual void OnTotalUpdated(decimal change)
+        protected virtual void OnTotalUpdated(Transaction newTransaction)
         {
             if (TotalUpdated != null)
             {
-                TotalUpdated(this, new TotalEventArgs(){ Change = change });
+                TotalUpdated(this, new TotalEventArgs(){ Transaction = newTransaction });
             }
         }
 
@@ -232,7 +274,7 @@ namespace BankingApp
 
     public class TotalEventArgs : EventArgs
     {
-        public decimal Change { get; set; }
+        public Transaction Transaction { get; set; }
     }      
 
     public enum TransactionCategory
@@ -247,16 +289,48 @@ namespace BankingApp
     {
         public decimal Amount { get; } = 0.00M;
         public TransactionCategory Category { get; }
+        public bool InOut; // 0 = out, 1 = in
+
+        private static int _transactionNumber = 0;
+        public static int TransactionNumber 
+        { 
+            get
+            {
+                return _transactionNumber;
+            } 
+        }
 
         public Transaction(decimal amount)
         {
             Amount = amount;
+
+            if (Amount < 0)
+            {
+                InOut = false;
+            }
+            else
+            {
+                InOut = true;
+            }
+
+            _transactionNumber++;
         }
 
         public Transaction(decimal amount, TransactionCategory category)
         {
             Amount = amount;
             Category = category;
+
+            if (Amount < 0)
+            {
+                InOut = false;
+            }
+            else
+            {
+                InOut = true;
+            }            
+
+            _transactionNumber++;
         }
 
     }
