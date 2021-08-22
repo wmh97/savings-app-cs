@@ -31,6 +31,8 @@ namespace SavingsWinform
         {
             this.components = new System.ComponentModel.Container();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.yearSelectionLabel = new System.Windows.Forms.Label();
+            this.chooseYear = new System.Windows.Forms.ComboBox();
             this.monthLabel = new System.Windows.Forms.Label();
             this.addYearMonth = new System.Windows.Forms.Button();
             this.amountEnteredLabel = new System.Windows.Forms.Label();
@@ -47,7 +49,7 @@ namespace SavingsWinform
             this.refreshDataGrid1 = new System.Windows.Forms.Button();
             this.transactionDataGridView1 = new System.Windows.Forms.DataGridView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.chooseYear = new System.Windows.Forms.ComboBox();
+            this.monthViewButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -64,6 +66,7 @@ namespace SavingsWinform
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.yearSelectionLabel);
             this.splitContainer1.Panel1.Controls.Add(this.chooseYear);
             this.splitContainer1.Panel1.Controls.Add(this.monthLabel);
             this.splitContainer1.Panel1.Controls.Add(this.addYearMonth);
@@ -81,6 +84,7 @@ namespace SavingsWinform
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.Color.SkyBlue;
+            this.splitContainer1.Panel2.Controls.Add(this.monthViewButton);
             this.splitContainer1.Panel2.Controls.Add(this.averageTransactionAmountLabel);
             this.splitContainer1.Panel2.Controls.Add(this.averageTransactionLabel);
             this.splitContainer1.Panel2.Controls.Add(this.refreshDataGrid1);
@@ -88,6 +92,25 @@ namespace SavingsWinform
             this.splitContainer1.Size = new System.Drawing.Size(989, 446);
             this.splitContainer1.SplitterDistance = 480;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // yearSelectionLabel
+            // 
+            this.yearSelectionLabel.AutoSize = true;
+            this.yearSelectionLabel.Location = new System.Drawing.Point(7, 385);
+            this.yearSelectionLabel.Name = "yearSelectionLabel";
+            this.yearSelectionLabel.Size = new System.Drawing.Size(40, 20);
+            this.yearSelectionLabel.TabIndex = 9;
+            this.yearSelectionLabel.Text = "Year:";
+            // 
+            // chooseYear
+            // 
+            this.chooseYear.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.chooseYear.FormattingEnabled = true;
+            this.chooseYear.Location = new System.Drawing.Point(7, 408);
+            this.chooseYear.Name = "chooseYear";
+            this.chooseYear.Size = new System.Drawing.Size(92, 28);
+            this.chooseYear.TabIndex = 8;
+            this.chooseYear.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // monthLabel
             // 
@@ -100,7 +123,7 @@ namespace SavingsWinform
             // 
             // addYearMonth
             // 
-            this.addYearMonth.Location = new System.Drawing.Point(147, 341);
+            this.addYearMonth.Location = new System.Drawing.Point(138, 341);
             this.addYearMonth.Name = "addYearMonth";
             this.addYearMonth.Size = new System.Drawing.Size(94, 29);
             this.addYearMonth.TabIndex = 6;
@@ -154,11 +177,11 @@ namespace SavingsWinform
             // newYearLabel
             // 
             this.newYearLabel.AutoSize = true;
-            this.newYearLabel.Location = new System.Drawing.Point(12, 320);
+            this.newYearLabel.Location = new System.Drawing.Point(7, 320);
             this.newYearLabel.Name = "newYearLabel";
-            this.newYearLabel.Size = new System.Drawing.Size(129, 20);
+            this.newYearLabel.Size = new System.Drawing.Size(72, 20);
             this.newYearLabel.TabIndex = 4;
-            this.newYearLabel.Text = "Add Another Year:";
+            this.newYearLabel.Text = "Add Year:";
             this.newYearLabel.Click += new System.EventHandler(this.newYearLabel_Click);
             // 
             // allTimeTotalLabel
@@ -183,7 +206,7 @@ namespace SavingsWinform
             // 
             // inputYear
             // 
-            this.inputYear.Location = new System.Drawing.Point(16, 343);
+            this.inputYear.Location = new System.Drawing.Point(7, 343);
             this.inputYear.Name = "inputYear";
             this.inputYear.Size = new System.Drawing.Size(125, 27);
             this.inputYear.TabIndex = 2;
@@ -232,9 +255,9 @@ namespace SavingsWinform
             // 
             // refreshDataGrid1
             // 
-            this.refreshDataGrid1.Location = new System.Drawing.Point(394, 91);
+            this.refreshDataGrid1.Location = new System.Drawing.Point(394, 96);
             this.refreshDataGrid1.Name = "refreshDataGrid1";
-            this.refreshDataGrid1.Size = new System.Drawing.Size(99, 34);
+            this.refreshDataGrid1.Size = new System.Drawing.Size(99, 29);
             this.refreshDataGrid1.TabIndex = 4;
             this.refreshDataGrid1.Text = "Year View";
             this.refreshDataGrid1.UseVisualStyleBackColor = true;
@@ -257,15 +280,15 @@ namespace SavingsWinform
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
-            // chooseYear
+            // monthViewButton
             // 
-            this.chooseYear.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.chooseYear.FormattingEnabled = true;
-            this.chooseYear.Location = new System.Drawing.Point(7, 408);
-            this.chooseYear.Name = "chooseYear";
-            this.chooseYear.Size = new System.Drawing.Size(92, 28);
-            this.chooseYear.TabIndex = 8;
-            this.chooseYear.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            this.monthViewButton.Location = new System.Drawing.Point(282, 96);
+            this.monthViewButton.Name = "monthViewButton";
+            this.monthViewButton.Size = new System.Drawing.Size(106, 29);
+            this.monthViewButton.TabIndex = 7;
+            this.monthViewButton.Text = "Month View";
+            this.monthViewButton.UseVisualStyleBackColor = true;
+            this.monthViewButton.Click += new System.EventHandler(this.button1_Click);
             // 
             // Form1
             // 
@@ -306,6 +329,8 @@ namespace SavingsWinform
         private System.Windows.Forms.Label averageTransactionLabel;
         protected System.Windows.Forms.ComboBox chooseMonth;
         private System.Windows.Forms.ComboBox chooseYear;
+        private System.Windows.Forms.Label yearSelectionLabel;
+        private System.Windows.Forms.Button monthViewButton;
     }
 }
 

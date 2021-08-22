@@ -41,38 +41,31 @@ namespace SavingsWinform
                 return;
             }
 
-            try
-            {
 
-                SelectedYear = (int)chooseYear.SelectedItem;
-                foreach (Year year in Form1.Savings.Years)
+            SelectedYear = (int)chooseYear.SelectedItem;
+            foreach (Year year in Form1.Savings.Years)
+            {
+                if (SelectedYear == year.ThisYear)
                 {
-                    if (SelectedYear == year.ThisYear)
-                    {
-                        year.Months[Form1.SelectedMonth].RecordTransaction(newTransactionValue);
-                        transactionInput.Clear();
+                    year.Months[Form1.SelectedMonth].RecordTransaction(newTransactionValue);
+                    transactionInput.Clear();
                         
-                        allTimeTotalLabel.Text = Convert.ToString(Math.Ceiling((decimal)Form1.Savings.TotalAmount * 100) / 100);
-                        amountEnteredLabel.Text = Convert.ToString(newTransactionValue);
+                    allTimeTotalLabel.Text = Convert.ToString(Math.Ceiling((decimal)Form1.Savings.TotalAmount * 100) / 100);
+                    amountEnteredLabel.Text = Convert.ToString(newTransactionValue);
 
-                        averageTransactionAmountLabel.Text = Convert.ToString(Math.Ceiling(Statistics.AverageTransactionValue * 100) / 100);
+                    averageTransactionAmountLabel.Text = Convert.ToString(Math.Ceiling(Statistics.AverageTransactionValue * 100) / 100);
 
-                        transactionDataGridView1.DataSource = null;
-                        transactionDataGridView1.DataSource = year.Months[Form1.SelectedMonth].Transactions;
+                    transactionDataGridView1.DataSource = null;
+                    transactionDataGridView1.DataSource = year.Months[Form1.SelectedMonth].Transactions;
 
 
-                        return;
-                    }
+                    return;
                 }
+            }
 
-                MessageBox.Show("Inputted amount not stored!");
-                return;
-            }
-            catch
-            {
-                MessageBox.Show("Selected month or year not found!");
-                return;
-            }
+            MessageBox.Show("Inputted amount not stored!");
+            return;
+
 
         }
 
@@ -113,6 +106,9 @@ namespace SavingsWinform
             Year newYear = new Year(newYearValue);
             Form1.Savings.AddYear(newYear);
 
+            transactionDataGridView1.DataSource = null;
+            transactionDataGridView1.DataSource = Form1.Savings.Years;
+
             chooseYear.DataSource = null;
             chooseYear.DataSource = Form1.Savings.YearNumbers;
 
@@ -132,11 +128,6 @@ namespace SavingsWinform
         private void newYearLabel_Click(object sender, EventArgs e)
         {
 
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Form1.Savings.PrintTransactions();
         }
 
         private void allTimeTotalLabel_Click(object sender, EventArgs e)
@@ -163,6 +154,22 @@ namespace SavingsWinform
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            
+            foreach (Year year in Form1.Savings.Years)
+            {
+                if (year.ThisYear == Form1.SelectedYear)
+                {
+                    transactionDataGridView1.DataSource = null;
+                    transactionDataGridView1.DataSource = year.Months[Form1.SelectedMonth].Transactions;
+                    return;
+                }
+            }
+
+            MessageBox.Show("Could not get month view!");
         }
     }
 }
