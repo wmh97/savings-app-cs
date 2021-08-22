@@ -53,6 +53,11 @@ namespace SavingsWinform
                         transactionInput.Clear();
                         allTimeTotalLabel.Text = Convert.ToString((decimal)Form1.Savings.TotalAmount);
                         amountEnteredLabel.Text = Convert.ToString(newTransactionValue);
+
+                        transactionDataGridView1.DataSource = year.Months[Form1.SelectedMonth].Transactions;
+                        transactionDataGridView1.Update();
+
+
                         return;
                     }
                 }
@@ -131,6 +136,21 @@ namespace SavingsWinform
         private void allTimeTotalLabel_Click(object sender, EventArgs e)
         {
             
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void refreshDataGrid1_Click(object sender, EventArgs e)
+        {
+
+            transactionDataGridView1.Refresh();
+            transactionDataGridView1.Update();
+            transactionDataGridView1.DataSource = Form1.Savings.Years;
+            transactionDataGridView1.Refresh();
+            transactionDataGridView1.Update();
         }
     }
 }
