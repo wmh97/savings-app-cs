@@ -44,16 +44,23 @@ namespace SavingsWinform
             this.inputYear = new System.Windows.Forms.TextBox();
             this.storeTransaction = new System.Windows.Forms.Button();
             this.transactionInput = new System.Windows.Forms.TextBox();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mockTransactionDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.monthViewButton = new System.Windows.Forms.Button();
             this.averageTransactionAmountLabel = new System.Windows.Forms.Label();
             this.averageTransactionLabel = new System.Windows.Forms.Label();
             this.refreshDataGrid1 = new System.Windows.Forms.Button();
             this.transactionDataGridView1 = new System.Windows.Forms.DataGridView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.monthViewButton = new System.Windows.Forms.Button();
+            this.saveRecordsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadRecordsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.transactionDataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -79,6 +86,7 @@ namespace SavingsWinform
             this.splitContainer1.Panel1.Controls.Add(this.inputYear);
             this.splitContainer1.Panel1.Controls.Add(this.storeTransaction);
             this.splitContainer1.Panel1.Controls.Add(this.transactionInput);
+            this.splitContainer1.Panel1.Controls.Add(this.menuStrip1);
             this.splitContainer1.Panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel1_Paint);
             // 
             // splitContainer1.Panel2
@@ -135,7 +143,7 @@ namespace SavingsWinform
             // 
             this.amountEnteredLabel.AutoSize = true;
             this.amountEnteredLabel.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.amountEnteredLabel.Location = new System.Drawing.Point(101, 78);
+            this.amountEnteredLabel.Location = new System.Drawing.Point(101, 96);
             this.amountEnteredLabel.Name = "amountEnteredLabel";
             this.amountEnteredLabel.Size = new System.Drawing.Size(312, 46);
             this.amountEnteredLabel.TabIndex = 1;
@@ -145,7 +153,7 @@ namespace SavingsWinform
             // 
             this.plusEquals.AutoSize = true;
             this.plusEquals.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.plusEquals.Location = new System.Drawing.Point(29, 72);
+            this.plusEquals.Location = new System.Drawing.Point(29, 96);
             this.plusEquals.Name = "plusEquals";
             this.plusEquals.Size = new System.Drawing.Size(66, 46);
             this.plusEquals.TabIndex = 2;
@@ -187,7 +195,7 @@ namespace SavingsWinform
             // allTimeTotalLabel
             // 
             this.allTimeTotalLabel.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.allTimeTotalLabel.Location = new System.Drawing.Point(16, 9);
+            this.allTimeTotalLabel.Location = new System.Drawing.Point(12, 50);
             this.allTimeTotalLabel.Name = "allTimeTotalLabel";
             this.allTimeTotalLabel.Size = new System.Drawing.Size(322, 63);
             this.allTimeTotalLabel.TabIndex = 0;
@@ -229,6 +237,53 @@ namespace SavingsWinform
             this.transactionInput.Size = new System.Drawing.Size(156, 27);
             this.transactionInput.TabIndex = 0;
             this.transactionInput.TextChanged += new System.EventHandler(this.transactionInput_TextChanged);
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.dataToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(480, 28);
+            this.menuStrip1.TabIndex = 10;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.BackColor = System.Drawing.Color.Transparent;
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveRecordsToolStripMenuItem,
+            this.loadRecordsToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 24);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // dataToolStripMenuItem
+            // 
+            this.dataToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mockTransactionDataToolStripMenuItem});
+            this.dataToolStripMenuItem.Name = "dataToolStripMenuItem";
+            this.dataToolStripMenuItem.Size = new System.Drawing.Size(55, 24);
+            this.dataToolStripMenuItem.Text = "Data";
+            // 
+            // mockTransactionDataToolStripMenuItem
+            // 
+            this.mockTransactionDataToolStripMenuItem.Name = "mockTransactionDataToolStripMenuItem";
+            this.mockTransactionDataToolStripMenuItem.Size = new System.Drawing.Size(243, 26);
+            this.mockTransactionDataToolStripMenuItem.Text = "Mock Transaction Data";
+            this.mockTransactionDataToolStripMenuItem.Click += new System.EventHandler(this.mockTransactionDataToolStripMenuItem_Click);
+            // 
+            // monthViewButton
+            // 
+            this.monthViewButton.Location = new System.Drawing.Point(282, 96);
+            this.monthViewButton.Name = "monthViewButton";
+            this.monthViewButton.Size = new System.Drawing.Size(106, 29);
+            this.monthViewButton.TabIndex = 7;
+            this.monthViewButton.Text = "Month View";
+            this.monthViewButton.UseVisualStyleBackColor = true;
+            this.monthViewButton.Click += new System.EventHandler(this.button1_Click);
             // 
             // averageTransactionAmountLabel
             // 
@@ -280,15 +335,19 @@ namespace SavingsWinform
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
-            // monthViewButton
+            // saveRecordsToolStripMenuItem
             // 
-            this.monthViewButton.Location = new System.Drawing.Point(282, 96);
-            this.monthViewButton.Name = "monthViewButton";
-            this.monthViewButton.Size = new System.Drawing.Size(106, 29);
-            this.monthViewButton.TabIndex = 7;
-            this.monthViewButton.Text = "Month View";
-            this.monthViewButton.UseVisualStyleBackColor = true;
-            this.monthViewButton.Click += new System.EventHandler(this.button1_Click);
+            this.saveRecordsToolStripMenuItem.Name = "saveRecordsToolStripMenuItem";
+            this.saveRecordsToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.saveRecordsToolStripMenuItem.Text = "Save Records";
+            this.saveRecordsToolStripMenuItem.Click += new System.EventHandler(this.saveRecordsToolStripMenuItem_Click);
+            // 
+            // loadRecordsToolStripMenuItem
+            // 
+            this.loadRecordsToolStripMenuItem.Name = "loadRecordsToolStripMenuItem";
+            this.loadRecordsToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.loadRecordsToolStripMenuItem.Text = "Load Records";
+            this.loadRecordsToolStripMenuItem.Click += new System.EventHandler(this.loadRecordsToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -304,6 +363,8 @@ namespace SavingsWinform
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.transactionDataGridView1)).EndInit();
             this.ResumeLayout(false);
 
@@ -331,6 +392,12 @@ namespace SavingsWinform
         private System.Windows.Forms.ComboBox chooseYear;
         private System.Windows.Forms.Label yearSelectionLabel;
         private System.Windows.Forms.Button monthViewButton;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dataToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mockTransactionDataToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveRecordsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadRecordsToolStripMenuItem;
     }
 }
 

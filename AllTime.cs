@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace SavingsWinform
@@ -72,5 +74,19 @@ namespace SavingsWinform
             Statistics.EmptyAll();
         }
 
+        public static void SaveRecords(AllTime allTime)
+        {
+            string fileName = "savingsRecords.json";
+            var options = new JsonSerializerOptions { IncludeFields = true };
+            string jsonString = JsonSerializer.Serialize(allTime, options);
+            File.WriteAllText(fileName, jsonString);
+        }
+
+        public static AllTime LoadRecords()
+        {
+            string fileName = "savingsRecords.json";
+            string jsonString = File.ReadAllText(fileName);
+            return JsonSerializer.Deserialize<AllTime>(jsonString);
+        }
     }
 }

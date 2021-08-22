@@ -154,6 +154,7 @@ namespace SavingsWinform
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            SelectedYear = (int)chooseYear.SelectedItem;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -170,6 +171,64 @@ namespace SavingsWinform
             }
 
             MessageBox.Show("Could not get month view!");
+        }
+
+        private void dataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void mockTransactionDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form1.Savings.EmptyAll();
+            MockData.GenerateTransactions(Form1.Savings);
+
+            // put years and data into combo boxes and data grid.
+            transactionDataGridView1.DataSource = null;
+            transactionDataGridView1.DataSource = Form1.Savings.Years;
+
+            chooseYear.DataSource = null;
+            chooseYear.DataSource = Form1.Savings.YearNumbers;
+        }
+
+        private void saveRecordsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                AllTime.SaveRecords(Form1.Savings);
+                MessageBox.Show("Saved successfully.");
+            }
+            catch
+            {
+                MessageBox.Show("Could not save transaction records!");
+            }
+        }
+
+        private void loadRecordsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Load feature not working yet.");
+
+            /*
+                Load Records Currently Not Working! 
+            */
+
+            /*Form1.Savings.EmptyAll();
+            try
+            {
+                Form1.Savings = AllTime.LoadRecords();
+                MessageBox.Show("Loaded successfully.");
+            }
+            catch
+            {
+                MessageBox.Show("Could not load transaction records!");
+            }
+
+            transactionDataGridView1.DataSource = null;
+            transactionDataGridView1.DataSource = Form1.Savings.Years;
+
+            chooseYear.DataSource = null;
+            chooseYear.DataSource = Form1.Savings.YearNumbers;*/
+
         }
     }
 }
