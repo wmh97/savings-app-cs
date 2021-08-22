@@ -33,18 +33,21 @@ namespace SavingsWinform
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.monthLabel = new System.Windows.Forms.Label();
             this.addYearMonth = new System.Windows.Forms.Button();
+            this.amountEnteredLabel = new System.Windows.Forms.Label();
+            this.plusEquals = new System.Windows.Forms.Label();
             this.chooseMonth = new System.Windows.Forms.ComboBox();
             this.newYearLabel = new System.Windows.Forms.Label();
+            this.allTimeTotalLabel = new System.Windows.Forms.Label();
             this.transactionAmountLabel = new System.Windows.Forms.Label();
             this.inputYear = new System.Windows.Forms.TextBox();
             this.storeTransaction = new System.Windows.Forms.Button();
             this.transactionInput = new System.Windows.Forms.TextBox();
+            this.averageTransactionAmountLabel = new System.Windows.Forms.Label();
+            this.averageTransactionLabel = new System.Windows.Forms.Label();
             this.refreshDataGrid1 = new System.Windows.Forms.Button();
             this.transactionDataGridView1 = new System.Windows.Forms.DataGridView();
-            this.plusEquals = new System.Windows.Forms.Label();
-            this.amountEnteredLabel = new System.Windows.Forms.Label();
-            this.allTimeTotalLabel = new System.Windows.Forms.Label();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.chooseYear = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -61,6 +64,7 @@ namespace SavingsWinform
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.chooseYear);
             this.splitContainer1.Panel1.Controls.Add(this.monthLabel);
             this.splitContainer1.Panel1.Controls.Add(this.addYearMonth);
             this.splitContainer1.Panel1.Controls.Add(this.amountEnteredLabel);
@@ -77,6 +81,8 @@ namespace SavingsWinform
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.Color.SkyBlue;
+            this.splitContainer1.Panel2.Controls.Add(this.averageTransactionAmountLabel);
+            this.splitContainer1.Panel2.Controls.Add(this.averageTransactionLabel);
             this.splitContainer1.Panel2.Controls.Add(this.refreshDataGrid1);
             this.splitContainer1.Panel2.Controls.Add(this.transactionDataGridView1);
             this.splitContainer1.Size = new System.Drawing.Size(989, 446);
@@ -86,7 +92,7 @@ namespace SavingsWinform
             // monthLabel
             // 
             this.monthLabel.AutoSize = true;
-            this.monthLabel.Location = new System.Drawing.Point(11, 386);
+            this.monthLabel.Location = new System.Drawing.Point(105, 385);
             this.monthLabel.Name = "monthLabel";
             this.monthLabel.Size = new System.Drawing.Size(55, 20);
             this.monthLabel.TabIndex = 7;
@@ -102,8 +108,29 @@ namespace SavingsWinform
             this.addYearMonth.UseVisualStyleBackColor = true;
             this.addYearMonth.Click += new System.EventHandler(this.addYearMonth_Click);
             // 
+            // amountEnteredLabel
+            // 
+            this.amountEnteredLabel.AutoSize = true;
+            this.amountEnteredLabel.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.amountEnteredLabel.Location = new System.Drawing.Point(101, 78);
+            this.amountEnteredLabel.Name = "amountEnteredLabel";
+            this.amountEnteredLabel.Size = new System.Drawing.Size(312, 46);
+            this.amountEnteredLabel.TabIndex = 1;
+            this.amountEnteredLabel.Text = "<Amount Entered>";
+            // 
+            // plusEquals
+            // 
+            this.plusEquals.AutoSize = true;
+            this.plusEquals.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.plusEquals.Location = new System.Drawing.Point(29, 72);
+            this.plusEquals.Name = "plusEquals";
+            this.plusEquals.Size = new System.Drawing.Size(66, 46);
+            this.plusEquals.TabIndex = 2;
+            this.plusEquals.Text = "+=";
+            // 
             // chooseMonth
             // 
+            this.chooseMonth.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.chooseMonth.FormattingEnabled = true;
             this.chooseMonth.Items.AddRange(new object[] {
             "January",
@@ -118,7 +145,7 @@ namespace SavingsWinform
             "October",
             "November",
             "December"});
-            this.chooseMonth.Location = new System.Drawing.Point(11, 409);
+            this.chooseMonth.Location = new System.Drawing.Point(105, 408);
             this.chooseMonth.Name = "chooseMonth";
             this.chooseMonth.Size = new System.Drawing.Size(130, 28);
             this.chooseMonth.TabIndex = 5;
@@ -134,10 +161,20 @@ namespace SavingsWinform
             this.newYearLabel.Text = "Add Another Year:";
             this.newYearLabel.Click += new System.EventHandler(this.newYearLabel_Click);
             // 
+            // allTimeTotalLabel
+            // 
+            this.allTimeTotalLabel.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.allTimeTotalLabel.Location = new System.Drawing.Point(16, 9);
+            this.allTimeTotalLabel.Name = "allTimeTotalLabel";
+            this.allTimeTotalLabel.Size = new System.Drawing.Size(322, 63);
+            this.allTimeTotalLabel.TabIndex = 0;
+            this.allTimeTotalLabel.Text = "<Total Amount>";
+            this.allTimeTotalLabel.Click += new System.EventHandler(this.allTimeTotalLabel_Click);
+            // 
             // transactionAmountLabel
             // 
             this.transactionAmountLabel.AutoSize = true;
-            this.transactionAmountLabel.Location = new System.Drawing.Point(150, 387);
+            this.transactionAmountLabel.Location = new System.Drawing.Point(239, 386);
             this.transactionAmountLabel.Name = "transactionAmountLabel";
             this.transactionAmountLabel.Size = new System.Drawing.Size(144, 20);
             this.transactionAmountLabel.TabIndex = 3;
@@ -154,7 +191,7 @@ namespace SavingsWinform
             // 
             // storeTransaction
             // 
-            this.storeTransaction.Location = new System.Drawing.Point(312, 409);
+            this.storeTransaction.Location = new System.Drawing.Point(406, 409);
             this.storeTransaction.Name = "storeTransaction";
             this.storeTransaction.Size = new System.Drawing.Size(65, 29);
             this.storeTransaction.TabIndex = 1;
@@ -164,11 +201,34 @@ namespace SavingsWinform
             // 
             // transactionInput
             // 
-            this.transactionInput.Location = new System.Drawing.Point(150, 410);
+            this.transactionInput.Location = new System.Drawing.Point(243, 409);
             this.transactionInput.Name = "transactionInput";
             this.transactionInput.Size = new System.Drawing.Size(156, 27);
             this.transactionInput.TabIndex = 0;
             this.transactionInput.TextChanged += new System.EventHandler(this.transactionInput_TextChanged);
+            // 
+            // averageTransactionAmountLabel
+            // 
+            this.averageTransactionAmountLabel.AutoSize = true;
+            this.averageTransactionAmountLabel.BackColor = System.Drawing.Color.Transparent;
+            this.averageTransactionAmountLabel.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.averageTransactionAmountLabel.Location = new System.Drawing.Point(269, 9);
+            this.averageTransactionAmountLabel.Name = "averageTransactionAmountLabel";
+            this.averageTransactionAmountLabel.Size = new System.Drawing.Size(187, 46);
+            this.averageTransactionAmountLabel.TabIndex = 6;
+            this.averageTransactionAmountLabel.Text = "<Amount>";
+            this.averageTransactionAmountLabel.Click += new System.EventHandler(this.label1_Click_1);
+            // 
+            // averageTransactionLabel
+            // 
+            this.averageTransactionLabel.AutoSize = true;
+            this.averageTransactionLabel.BackColor = System.Drawing.Color.Transparent;
+            this.averageTransactionLabel.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.averageTransactionLabel.Location = new System.Drawing.Point(3, 9);
+            this.averageTransactionLabel.Name = "averageTransactionLabel";
+            this.averageTransactionLabel.Size = new System.Drawing.Size(260, 37);
+            this.averageTransactionLabel.TabIndex = 5;
+            this.averageTransactionLabel.Text = "Average Transaction:";
             // 
             // refreshDataGrid1
             // 
@@ -191,41 +251,21 @@ namespace SavingsWinform
             this.transactionDataGridView1.TabIndex = 3;
             this.transactionDataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
-            // plusEquals
-            // 
-            this.plusEquals.AutoSize = true;
-            this.plusEquals.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.plusEquals.Location = new System.Drawing.Point(29, 72);
-            this.plusEquals.Name = "plusEquals";
-            this.plusEquals.Size = new System.Drawing.Size(66, 46);
-            this.plusEquals.TabIndex = 2;
-            this.plusEquals.Text = "+=";
-            // 
-            // amountEnteredLabel
-            // 
-            this.amountEnteredLabel.AutoSize = true;
-            this.amountEnteredLabel.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.amountEnteredLabel.Location = new System.Drawing.Point(101, 78);
-            this.amountEnteredLabel.Name = "amountEnteredLabel";
-            this.amountEnteredLabel.Size = new System.Drawing.Size(312, 46);
-            this.amountEnteredLabel.TabIndex = 1;
-            this.amountEnteredLabel.Text = "<Amount Entered>";
-            // 
-            // allTimeTotalLabel
-            // 
-            this.allTimeTotalLabel.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.allTimeTotalLabel.Location = new System.Drawing.Point(16, 9);
-            this.allTimeTotalLabel.Name = "allTimeTotalLabel";
-            this.allTimeTotalLabel.Size = new System.Drawing.Size(322, 63);
-            this.allTimeTotalLabel.TabIndex = 0;
-            this.allTimeTotalLabel.Text = "<Total Amount>";
-            this.allTimeTotalLabel.Click += new System.EventHandler(this.allTimeTotalLabel_Click);
-            // 
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            // 
+            // chooseYear
+            // 
+            this.chooseYear.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.chooseYear.FormattingEnabled = true;
+            this.chooseYear.Location = new System.Drawing.Point(7, 408);
+            this.chooseYear.Name = "chooseYear";
+            this.chooseYear.Size = new System.Drawing.Size(92, 28);
+            this.chooseYear.TabIndex = 8;
+            this.chooseYear.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // Form1
             // 
@@ -238,6 +278,7 @@ namespace SavingsWinform
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.transactionDataGridView1)).EndInit();
@@ -253,7 +294,6 @@ namespace SavingsWinform
         private System.Windows.Forms.Label transactionAmountLabel;
         private System.Windows.Forms.TextBox inputYear;
         private System.Windows.Forms.Button addYearMonth;
-        private System.Windows.Forms.ComboBox chooseMonth;
         private System.Windows.Forms.Label newYearLabel;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.Label monthLabel;
@@ -262,6 +302,10 @@ namespace SavingsWinform
         private System.Windows.Forms.Label amountEnteredLabel;
         private System.Windows.Forms.DataGridView transactionDataGridView1;
         private System.Windows.Forms.Button refreshDataGrid1;
+        private System.Windows.Forms.Label averageTransactionAmountLabel;
+        private System.Windows.Forms.Label averageTransactionLabel;
+        protected System.Windows.Forms.ComboBox chooseMonth;
+        private System.Windows.Forms.ComboBox chooseYear;
     }
 }
 

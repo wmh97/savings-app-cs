@@ -15,6 +15,7 @@ namespace SavingsWinform
 
         static AllTime Savings = new AllTime();
         static int SelectedMonth = 0;
+        static int SelectedYear = 0;
 
         public Form1()
         {
@@ -40,22 +41,24 @@ namespace SavingsWinform
                 return;
             }
 
-            int currentYear;
             try
             {
-                currentYear = Convert.ToInt32(inputYear.Text);
 
+                SelectedYear = (int)chooseYear.SelectedItem;
                 foreach (Year year in Form1.Savings.Years)
                 {
-                    if (currentYear == year.ThisYear)
+                    if (SelectedYear == year.ThisYear)
                     {
                         year.Months[Form1.SelectedMonth].RecordTransaction(newTransactionValue);
                         transactionInput.Clear();
-                        allTimeTotalLabel.Text = Convert.ToString((decimal)Form1.Savings.TotalAmount);
+                        
+                        allTimeTotalLabel.Text = Convert.ToString(Math.Ceiling((decimal)Form1.Savings.TotalAmount * 100) / 100);
                         amountEnteredLabel.Text = Convert.ToString(newTransactionValue);
 
+                        averageTransactionAmountLabel.Text = Convert.ToString(Math.Ceiling(Statistics.AverageTransactionValue * 100) / 100);
+
+                        transactionDataGridView1.DataSource = null;
                         transactionDataGridView1.DataSource = year.Months[Form1.SelectedMonth].Transactions;
-                        transactionDataGridView1.Update();
 
 
                         return;
@@ -110,6 +113,9 @@ namespace SavingsWinform
             Year newYear = new Year(newYearValue);
             Form1.Savings.AddYear(newYear);
 
+            chooseYear.DataSource = null;
+            chooseYear.DataSource = Form1.Savings.YearNumbers;
+
             inputYear.Clear();
         }
 
@@ -146,11 +152,17 @@ namespace SavingsWinform
         private void refreshDataGrid1_Click(object sender, EventArgs e)
         {
 
-            transactionDataGridView1.Refresh();
-            transactionDataGridView1.Update();
+            transactionDataGridView1.DataSource = null;
             transactionDataGridView1.DataSource = Form1.Savings.Years;
-            transactionDataGridView1.Refresh();
-            transactionDataGridView1.Update();
+        }
+
+        private void label1_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
         }
     }
 }

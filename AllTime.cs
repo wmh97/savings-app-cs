@@ -17,6 +17,15 @@ namespace SavingsWinform
             }
         }
 
+        private List<int> _yearNumbers = new List<int>();
+        public List<int> YearNumbers
+        {
+            get
+            {
+                return _yearNumbers;
+            }
+        }
+
         //private decimal _totalAmount;
         public decimal TotalAmount
         {
@@ -41,6 +50,7 @@ namespace SavingsWinform
         public void AddYear(Year year)
         {
             Years.Add(year);
+            YearNumbers.Add(year.ThisYear);
         }
 
         public void PrintTransactions()
